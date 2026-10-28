@@ -162,7 +162,6 @@
     <span class="icon" aria-hidden="true">💍</span>
     <h2>Confirmar asistencia</h2>
     <p>Para nosotros es muy importante que confirmes tu asistencia antes del 19 de diciembre de 2026.</p>
-    <!-- Reemplaza 57XXXXXXXXXX por el número de WhatsApp -->
     <a class="btn" href="https://wa.me/573206124501" target="_blank" rel="noopener">Escríbenos</a>
   </section>
 
@@ -211,6 +210,22 @@
   }
   document.addEventListener('click', firstTouch);
   document.addEventListener('touchstart', firstTouch, {passive:true});
+// Confirmación por WhatsApp
+const NUMERO = "573206124501"; // tu número, con código de país y sin signos
+const MENSAJE = "¡Hola! Confirmo mi asistencia a la boda de Viviana y Bryan el 26 de diciembre de 2026. Mi nombre es: ";
+const urlWhatsApp = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(MENSAJE);
+
+function confirmar(e){
+  e.preventDefault();
+  window.open(urlWhatsApp, "_blank", "noopener");
+  document.getElementById("gracias").hidden = false;
+  document.getElementById("gracias").scrollIntoView({behavior:"smooth", block:"center"});
+}
+document.getElementById("btnConfirmar").addEventListener("click", confirmar);
+document.getElementById("reintentar").addEventListener("click", e => {
+  e.preventDefault();
+  window.open(urlWhatsApp, "_blank", "noopener");
+});
 </script>
 </body>
 </html>
