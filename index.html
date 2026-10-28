@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¡Nos Casamos! Viviana & Bryan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#212b43;
+    --gold:#dbb561;
+    --text:#f4f1ea;
+    --card:#2b354d;
+    --photo:#3a3f4a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    padding:20px 14px;
+    color:var(--text);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:18px;
+    line-height:1.5;
+    text-align:center;
+  }
+  main{
+    position:relative;
+    max-width:480px;margin:0 auto;padding:52px 28px 64px;
+    background:var(--bg);
+    border:4px solid var(--gold);
+    box-shadow:0 0 0 6px var(--bg), 0 0 0 8px var(--gold);
+  }
+  main::before{
+    content:"";position:absolute;inset:10px;
+    border:1px solid var(--gold);pointer-events:none;
+  }
+  main::after{
+    content:"";position:absolute;inset:16px;
+    border:1px solid rgba(219,181,97,.45);pointer-events:none;
+  }
+  section{margin-top:36px}
+  .script{font-family:'Great Vibes',cursive;font-weight:400}
+  h1{font-size:3rem;color:var(--gold);line-height:1.1}
+  .names{font-size:2.2rem;margin-top:4px}
+  .icon{font-size:2rem;display:block;margin-bottom:6px}
+  .heart{color:var(--gold);font-size:1.3rem;margin:22px 0}
+  .intro{font-size:1.05rem;line-height:1.7}
+  .date{color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-size:.95rem;margin-top:22px}
+  .countdown{display:flex;gap:10px;justify-content:center;margin-top:18px}
+  .box{
+    flex:1;max-width:100px;padding:12px 4px;
+    border:1px solid var(--gold);border-radius:12px;background:var(--card);
+  }
+  .box b{display:block;font-size:1.7rem;color:var(--gold);font-weight:600;line-height:1.1}
+  .box span{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+  h2{
+    color:var(--gold);font-weight:400;font-size:1.05rem;
+    letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;
+  }
+  .place{font-weight:600;font-size:1.1rem}
+  .btn{
+    display:inline-block;margin-top:14px;padding:9px 28px;
+    background:var(--gold);color:var(--bg);text-decoration:none;
+    border-radius:999px;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;
+    transition:transform .15s;
+  }
+  .btn:hover,.btn:focus-visible{transform:translateY(-2px);outline:2px solid var(--text);outline-offset:2px}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+  .gallery div,.gallery img{
+    aspect-ratio:4/3;width:100%;object-fit:cover;border-radius:12px;
+    background:var(--photo);display:flex;align-items:center;justify-content:center;font-size:1.8rem;
+  }
+  .verse{font-style:italic;line-height:1.7;margin-top:34px}
+  .dress{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:1rem;line-height:1.5}
+  .dress strong{display:block;font-size:1.1rem;margin-bottom:4px}
+  .confirm p{font-size:1.05rem}
+  @media (prefers-reduced-motion:reduce){.btn{transition:none}}
+  .music{
+    position:fixed;right:16px;bottom:16px;z-index:10;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--gold);color:var(--bg);border:2px solid var(--bg);
+    font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .music:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+  .music.playing{animation:spin 6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){.music.playing{animation:none}}
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <h1 class="script">¡Nos Casamos!</h1>
+    <p class="script names">Viviana &amp; Bryan</p>
+    <p class="heart" aria-hidden="true">♡</p>
+  </header>
+
+  <p class="intro">
+    Dos corazones, un mismo sueño. Pronto daremos el sí, porque sabemos que fue Dios quien puso uno en el camino del otro. Con fe y amor, nos preparamos para unir nuestras vidas bajo su voluntad, y no queremos hacerlo sin ti. Tu presencia será una bendición en este momento donde daremos inicio a un hogar construido sobre la fe y el cariño.<br>
+    ¡Te esperamos con mucho amor y gratitud!
+  </p>
+
+  <p class="date">Sábado, 26 de diciembre de 2026</p>
+
+  <div class="countdown" role="timer" aria-label="Cuenta regresiva">
+    <div class="box"><b id="d">--</b><span>Días</span></div>
+    <div class="box"><b id="h">--</b><span>Horas</span></div>
+    <div class="box"><b id="m">--</b><span>Min</span></div>
+    <div class="box"><b id="s">--</b><span>Seg</span></div>
+  </div>
+
+  <section>
+    <span class="icon" aria-hidden="true">⛪</span>
+    <h2>Ceremonia</h2>
+    <p class="place">Iglesia San Agustín</p>
+    <p>Centro, Popayán Cauca</p>
+    <p>3:00 PM</p>
+    <!-- Reemplaza el enlace por el de Google Maps -->
+    <a class="btn" href="https://maps.google.com/?q=Iglesia+San+Agustín+Popayán" target="_blank" rel="noopener">Cómo llegar</a>
+  </section>
+
+  <section>
+    <span class="icon" aria-hidden="true">🥂</span>
+    <h2>Recepción</h2>
+    <p class="place">Estadero Panorama</p>
+    <p>Popayán Cauca</p>
+    <p>7:00 PM</p>
+    <a class="btn" href="https://maps.google.com/?q=Estadero+Panorama+Popayán" target="_blank" rel="noopener">Cómo llegar</a>
+  </section>
+
+  <section>
+    <span class="icon" aria-hidden="true">📷</span>
+    <h2>Galería</h2>
+    <!-- Reemplaza cada <div> por: <img src="foto1.jpg" alt="Viviana y Bryan"> -->
+    <div class="gallery">
+      <div aria-hidden="true">📷</div>
+      <div aria-hidden="true">📷</div>
+      <div aria-hidden="true">📷</div>
+      <div aria-hidden="true">📷</div>
+    </div>
+  </section>
+
+  <p class="verse">“No es bueno que el hombre esté solo. Por eso deja el hombre a su padre y a su madre y se une a su mujer, y se hacen una sola carne. (Gn 2, 18-24)”</p>
+
+  <section>
+    <span class="icon" aria-hidden="true">👗</span>
+    <h2>Dress Code</h2>
+    <div class="dress">
+      <div><strong>Mujeres</strong>Vestido elegante-casual (por favor evita colores blanco, rojo, negro y beige)</div>
+      <div><strong>Hombres</strong>Traje elegante-casual (por favor evita color azul noche)</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="icon" aria-hidden="true">💌</span>
+    <h2>Lluvia de sobres</h2>
+  </section>
+
+  <section class="confirm">
+    <span class="icon" aria-hidden="true">💍</span>
+    <h2>Confirmar asistencia</h2>
+    <p>Para nosotros es muy importante que confirmes tu asistencia antes del 19 de diciembre de 2026.</p>
+    <!-- Reemplaza 57XXXXXXXXXX por el número de WhatsApp -->
+    <a class="btn" href="https://wa.me/57XXXXXXXXXX?text=Hola,%20confirmo%20mi%20asistencia%20a%20la%20boda" target="_blank" rel="noopener">Escríbenos</a>
+  </section>
+
+</main>
+
+<script>
+  // Fecha de la ceremonia: 26 de diciembre de 2026, 3:00 PM
+  const target = new Date(2026, 11, 26, 15, 0, 0).getTime();
+  const el = id => document.getElementById(id);
+  function tick(){
+    let diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 86400000); diff %= 86400000;
+    const h = Math.floor(diff / 3600000);  diff %= 3600000;
+    const m = Math.floor(diff / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    el('d').textContent = d;
+    el('h').textContent = h;
+    el('m').textContent = m;
+    el('s').textContent = s;
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+<!-- Coloca tu canción en la misma carpeta con el nombre musica.mp3 -->
+<audio id="bgm" src="musica.mp3" loop preload="auto"></audio>
+<button class="music" id="musicBtn" aria-label="Reproducir música">🎵</button>
+
+<script>
+  const bgm = document.getElementById('bgm');
+  const btn = document.getElementById('musicBtn');
+  function setState(on){
+    btn.classList.toggle('playing', on);
+    btn.textContent = on ? '⏸' : '🎵';
+    btn.setAttribute('aria-label', on ? 'Pausar música' : 'Reproducir música');
+  }
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (bgm.paused) { bgm.play().then(()=>setState(true)).catch(()=>{}); }
+    else { bgm.pause(); setState(false); }
+  });
+  // Los navegadores bloquean el autoplay: la música inicia con el primer toque en la página
+  function firstTouch(){
+    bgm.play().then(()=>setState(true)).catch(()=>{});
+    document.removeEventListener('click', firstTouch);
+    document.removeEventListener('touchstart', firstTouch);
+  }
+  document.addEventListener('click', firstTouch);
+  document.addEventListener('touchstart', firstTouch, {passive:true});
+</script>
+</body>
+</html>
