@@ -67,6 +67,7 @@
     transition:transform .15s;
   }
   .btn:hover,.btn:focus-visible{transform:translateY(-2px);outline:2px solid var(--text);outline-offset:2px}
+  button.btn{border:none;cursor:pointer;font-family:inherit}
   .gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
   .gallery div,.gallery img{
     aspect-ratio:4/3;width:100%;object-fit:cover;border-radius:12px;
@@ -76,7 +77,12 @@
   .dress{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:1rem;line-height:1.5}
   .dress strong{display:block;font-size:1.1rem;margin-bottom:4px}
   .confirm p{font-size:1.05rem}
-  @media (prefers-reduced-motion:reduce){.btn{transition:none}}
+  .gracias{
+    margin-top:16px;padding:14px 16px;
+    border:1px solid var(--gold);border-radius:12px;
+    background:var(--card);font-size:1.05rem;line-height:1.6;
+  }
+  .gracias a{color:var(--gold)}
   .music{
     position:fixed;right:16px;bottom:16px;z-index:10;
     width:48px;height:48px;border-radius:50%;
@@ -86,10 +92,42 @@
   .music:focus-visible{outline:2px solid var(--text);outline-offset:2px}
   .music.playing{animation:spin 6s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  @media (prefers-reduced-motion:reduce){.music.playing{animation:none}}
+
+  /* Portada con el nombre del invitado */
+  .cover{
+    position:fixed;inset:0;z-index:100;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    transition:opacity .6s, visibility .6s;
+  }
+  .cover.hide{opacity:0;visibility:hidden}
+  .cover-box{
+    width:100%;max-width:420px;padding:48px 24px;text-align:center;
+    border:4px solid var(--gold);
+    box-shadow:0 0 0 6px var(--bg), 0 0 0 8px var(--gold);
+  }
+  .cover-small{letter-spacing:.2em;text-transform:uppercase;font-size:.85rem;color:var(--gold);margin-top:18px}
+  .cover-names{font-size:2.6rem;color:var(--text);line-height:1.2}
+  .cover-guest{font-size:2.4rem;color:var(--gold);line-height:1.2;margin:6px 0 28px;overflow-wrap:anywhere}
+
+  @media (prefers-reduced-motion:reduce){
+    .btn,.cover{transition:none}
+    .music.playing{animation:none}
+  }
 </style>
 </head>
 <body>
+
+<!-- Portada: muestra el nombre del invitado (?invitado=Nombre en el link) -->
+<div class="cover" id="cover">
+  <div class="cover-box">
+    <p class="cover-small">Estás invitado a la boda de</p>
+    <p class="script cover-names">Viviana &amp; Bryan</p>
+    <p class="cover-small">Invitación para</p>
+    <p class="script cover-guest" id="coverGuest">Querido invitado</p>
+    <button class="btn" id="openBtn" type="button">Abrir invitación</button>
+  </div>
+</div>
+
 <main>
 
   <header>
@@ -134,14 +172,14 @@
   <section>
     <span class="icon" aria-hidden="true">📷</span>
     <h2>Galería</h2>
-    <!-- Reemplaza cada <div> por: <img src="foto1.jpg" alt="Viviana y Bryan"> -->
- <div class="gallery">
-  <img src="foto1.jpg" alt="Viviana y Bryan">
-  <img src="foto2.jpg" alt="Viviana y Bryan">
-  <img src="foto3.jpg" alt="Viviana y Bryan">
-  <img src="foto4.jpg" alt="Viviana y Bryan">
-</div>
+    <div class="gallery">
+      <img src="foto1.jpg" alt="Viviana y Bryan">
+      <img src="foto2.jpg" alt="Viviana y Bryan">
+      <img src="foto3.jpg" alt="Viviana y Bryan">
+      <img src="foto4.jpg" alt="Viviana y Bryan">
+    </div>
   </section>
+
   <p class="verse">“No es bueno que el hombre esté solo. Por eso deja el hombre a su padre y a su madre y se une a su mujer, y se hacen una sola carne. (Gn 2, 18-24)”</p>
 
   <section>
@@ -163,14 +201,19 @@
     <h2>Confirmar asistencia</h2>
     <p>Para nosotros es muy importante que confirmes tu asistencia antes del 19 de diciembre de 2026.</p>
     <a class="btn" id="btnConfirmar" href="https://wa.me/573206124501" role="button">Escríbenos</a>
-<p class="gracias" id="gracias" hidden>
-  ¡Gracias por confirmar! Nos hace muy felices que nos acompañes. 💛<br>
-  Si no se abrió WhatsApp, <a id="reintentar" href="#">toca aquí</a>.
-</p>
+    <p class="gracias" id="gracias" hidden>
+      ¡Gracias por confirmar! Nos hace muy felices que nos acompañes. 💛<br>
+      Si no se abrió WhatsApp, <a id="reintentar" href="#">toca aquí</a>.
+    </p>
   </section>
 
 </main>
 
+<!-- Coloca tu canción en la misma carpeta con el nombre musica.mp3 -->
+<audio id="bgm" src="musica.mp3" loop preload="auto"></audio>
+<button class="music" id="musicBtn" aria-label="Reproducir música">🎵</button>
+
+<!-- Cuenta regresiva -->
 <script>
   // Fecha de la ceremonia: 26 de diciembre de 2026, 3:00 PM
   const target = new Date(2026, 11, 26, 15, 0, 0).getTime();
@@ -189,47 +232,52 @@
   tick();
   setInterval(tick, 1000);
 </script>
-<!-- Coloca tu canción en la misma carpeta con el nombre musica.mp3 -->
-<audio id="bgm" src="musica.mp3" loop preload="auto"></audio>
-<button class="music" id="musicBtn" aria-label="Reproducir música">🎵</button>
 
+<!-- Música -->
 <script>
   const bgm = document.getElementById('bgm');
-  const btn = document.getElementById('musicBtn');
+  const musicBtn = document.getElementById('musicBtn');
   function setState(on){
-    btn.classList.toggle('playing', on);
-    btn.textContent = on ? '⏸' : '🎵';
-    btn.setAttribute('aria-label', on ? 'Pausar música' : 'Reproducir música');
+    musicBtn.classList.toggle('playing', on);
+    musicBtn.textContent = on ? '⏸' : '🎵';
+    musicBtn.setAttribute('aria-label', on ? 'Pausar música' : 'Reproducir música');
   }
-  btn.addEventListener('click', e => {
+  musicBtn.addEventListener('click', e => {
     e.stopPropagation();
-    if (bgm.paused) { bgm.play().then(()=>setState(true)).catch(()=>{}); }
+    if (bgm.paused) { bgm.play().then(() => setState(true)).catch(() => {}); }
     else { bgm.pause(); setState(false); }
   });
-  // Los navegadores bloquean el autoplay: la música inicia con el primer toque en la página
-  function firstTouch(){
-    bgm.play().then(()=>setState(true)).catch(()=>{});
-    document.removeEventListener('click', firstTouch);
-    document.removeEventListener('touchstart', firstTouch);
-  }
-  document.addEventListener('click', firstTouch);
-  document.addEventListener('touchstart', firstTouch, {passive:true});
-// Confirmación por WhatsApp
-const NUMERO = "573206124501"; // tu número, con código de país y sin signos
-const MENSAJE = "💛 Nos sumamos a su alegría y confirmamos que asistiremos a la boda de Viviana & Bryan ✨ Familia: ";
-const urlWhatsApp = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(MENSAJE);
+</script>
 
-function confirmar(e){
-  e.preventDefault();
-  window.open(urlWhatsApp, "_blank", "noopener");
-  document.getElementById("gracias").hidden = false;
-  document.getElementById("gracias").scrollIntoView({behavior:"smooth", block:"center"});
-}
-document.getElementById("btnConfirmar").addEventListener("click", confirmar);
-document.getElementById("reintentar").addEventListener("click", e => {
-  e.preventDefault();
-  window.open(urlWhatsApp, "_blank", "noopener");
-});
+<!-- Invitado, portada y confirmación por WhatsApp -->
+<script>
+  // Nombre del invitado desde el link: ...index.html?invitado=Familia%20Perez
+  const invitado = (new URLSearchParams(location.search).get('invitado') || '').trim().slice(0, 60);
+  if (invitado) document.getElementById('coverGuest').textContent = invitado;
+
+  // Abrir la invitación (también inicia la música)
+  document.getElementById('openBtn').addEventListener('click', () => {
+    document.getElementById('cover').classList.add('hide');
+    window.scrollTo(0, 0);
+    bgm.play().then(() => setState(true)).catch(() => {});
+  });
+
+  // Confirmación por WhatsApp
+  const NUMERO = '573206124501'; // con código de país y sin signos
+  const MENSAJE = '💛 Nos sumamos a su alegría y confirmamos que asistiremos a la boda de Viviana & Bryan ✨ Familia: ' + invitado;
+  const urlWhatsApp = 'https://wa.me/' + NUMERO + '?text=' + encodeURIComponent(MENSAJE);
+
+  document.getElementById('btnConfirmar').addEventListener('click', e => {
+    e.preventDefault();
+    window.open(urlWhatsApp, '_blank', 'noopener');
+    const g = document.getElementById('gracias');
+    g.hidden = false;
+    g.scrollIntoView({behavior: 'smooth', block: 'center'});
+  });
+  document.getElementById('reintentar').addEventListener('click', e => {
+    e.preventDefault();
+    window.open(urlWhatsApp, '_blank', 'noopener');
+  });
 </script>
 </body>
 </html>
