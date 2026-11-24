@@ -260,10 +260,13 @@
 
 <!-- Invitado, portada y confirmación por WhatsApp -->
 <script>
-  // Nombre del invitado desde el link: ...index.html?invitado=Familia%20Perez
-  const invitado = (new URLSearchParams(location.search).get('invitado') || '').trim().slice(0, 60);
-  if (invitado) document.getElementById('coverGuest').textContent = invitado;
-
+ // Nombre del invitado desde el link:  (
+const params = new URLSearchParams(location.search);
+const invitado = (params.get('i') || params.get('invitado') || '')
+  .replace(/_+/g, ' ')   // el guion bajo se convierte en espacio
+  .trim()
+  .slice(0, 60);
+if (invitado) document.getElementById('coverGuest').textContent = invitado;
   // Abrir la invitación (también inicia la música)
   document.getElementById('openBtn').addEventListener('click', () => {
     document.getElementById('cover').classList.add('hide');
